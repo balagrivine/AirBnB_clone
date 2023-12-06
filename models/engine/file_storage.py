@@ -7,11 +7,15 @@ import os.path
 class FileStorage:
     """class that seializes and deserializes instances to and from JSON"""
 
+    '''directory_path = "models"
+    file_name = "file.json"
+    __file_path = os.path.join(directory_path, file_name)'''
     __file_path = "file.json"
     __objects = {}
-    
+
     def __init__(self):
-        """instantiation of public instance attributes"""
+        """initialization of attributes"""
+    
     def all(self):
         """returns the dictionary __objects"""
         return self.__objects
@@ -31,7 +35,7 @@ class FileStorage:
         obj_dict = {}
         for key, obj in self.__objects.items():
             obj_dict[key] = obj.to_dict()
-        with open(self.__file_path, "w") as file:
+        with open(self.__file_path, "w", encoding="utf-8") as file:
             json.dump(obj_dict, file)
 
     def reload(self):
@@ -39,13 +43,13 @@ class FileStorage:
             deserializes the JSON file to __objects
             only if the JSON file exists.
             otherwise do nithing"""
-        try:
-            with open (self.__file_path, "r") as file:
-                file_cont = file.read()
-                if file_cont:
-                    obj_dict = json.loads(file_cont)
-                    for key, value in obj_dict.items():
+        if os.path.exists(self.__file_path) is True:
+            with open (self.__file_path, "r", encoding="utf-8") as file:
+                try:
+                    obj_elem = json.load(file)
+                    for key, value in obj_elem.items():
                         class_name, obj_id = key.split(".")
                         self.__objects[key] = globals()[class_name](**value)
-        except FileNotFoundError:
-            pass
+                except json.JSONDecodeError as e:
+                    print("Error decoding JSON file {}" .format(e))
+        """print("Path does not exist")"""
