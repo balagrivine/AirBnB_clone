@@ -40,10 +40,12 @@ class HBNBCommand(cmd.Cmd):
         """
         if not class_name:
             print('** class name missing **')
-        if class_name not in self.clslist:
+        elif not self.clslist.get(class_name):
             print("** class doesn\'t exist **")
-        base_model = BaseModel(self)
-        base_model.save()
+        else:
+            obj = self.clslist[class_name]()
+            models.storage.save()
+            print(obj.id)
 
     def do_show(self, arg):
         """Prints the string rep of an instance
@@ -66,6 +68,31 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
             else:
                 print(obj)
+
+    def do_destroy(self, arg):
+        """Deletes an instance based on the class
+        name and id
+        """
+        class_name, obj_id = None, None
+        args = arg.split(" ")
+        if len(args) > 0:
+            class_name = args[0]
+        if len(args) > 1:
+            obj_id = args[1]
+        if not class_name:
+            print("** class name missing **")
+        elif not self.clslist.get(class_name):
+            print("** class name doesn\'t exist **")
+        elif not obj_id:
+            print("** instance id missing **")
+        else:
+            k = class_name + "." + obj_id
+            obj = models.storage.all().get(k)
+            if not obj_id:
+                print("** instance id missing **")
+            else:
+                del models.storage.all()[k]
+                models.storage.save()
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
