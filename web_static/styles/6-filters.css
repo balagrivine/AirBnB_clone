@@ -20,3 +20,23 @@ h4 {
 	font-weight: 400;
 	font-size: 14px;
 }
+
+.popover {
+	background-color: #FAFAFA;
+	border: 1px solid #DDDDDD;
+	visibility: hidden;
+	width: 100%;
+	display: block;
+	top: 100%
+	border-radius:  4px;
+}
+
+.popover li {
+	margin: 0;
+	padding: 0;
+}
+
+.location:hover, .amenities:hover .popover {
+	display: block;
+	visibility: visible;
+}

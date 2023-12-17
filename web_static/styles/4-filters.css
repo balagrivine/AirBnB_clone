@@ -7,6 +7,7 @@ main.container section.filters {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+	position: relative;
 
 }
 
@@ -18,6 +19,8 @@ section.filters button {
 	width: 20%;
 	border: 0px;
 	border-radius: 4px;
+	opacity: 1;
+	margin-right: 30px;
 
 }
 
